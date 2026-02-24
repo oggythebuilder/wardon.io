@@ -1,24 +1,30 @@
-import React from 'react';
+"use client";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-export default function Page() {
+export default function ToolPage() {
+  const [target, setTarget] = useState('');
+  const router = useRouter();
+
+  const handleScan = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (target) router.push(`/http-headers/${encodeURIComponent(target)}`);
+  };
+
   return (
-    <div className="min-h-screen bg-[#0A0A0A] pt-32 px-10 text-white" style={{ fontFamily: 'Times New Roman, Times, serif' }}>
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-6xl italic mb-4 uppercase tracking-tighter">http headers</h1>
-        <p className="text-green-500 mb-10 tracking-[0.5em] text-[10px] opacity-70">// STATUS: READY_FOR_RECON</p>
-        
-        <div className="border border-white/10 p-12 bg-white/[0.02] backdrop-blur-md">
-          <p className="text-gray-400 italic mb-6">Enter target infrastructure or domain to initialize module.</p>
-          <input 
-            type="text" 
-            placeholder="target_domain.com"
-            className="w-full bg-transparent border-b border-white/20 py-4 outline-none text-3xl focus:border-green-500 transition-all italic font-light"
-          />
-          <button className="mt-12 bg-white text-black px-12 py-4 font-bold uppercase text-[11px] tracking-[0.3em] hover:bg-green-500 transition-all duration-500 shadow-xl">
-            Execute Module
-          </button>
-        </div>
-      </div>
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 italic">
+      <h1 className="text-4xl mb-8 tracking-tighter uppercase font-bold">HTTP_HEADER_ANALYSIS</h1>
+      <form onSubmit={handleScan} className="w-full max-w-xl">
+        <input 
+          type="text" 
+          placeholder="target.com" 
+          className="w-full bg-transparent border-b border-white/20 p-4 text-2xl outline-none focus:border-green-500 transition-all"
+          onChange={(e) => setTarget(e.target.value)}
+        />
+        <button className="mt-8 border border-white/20 px-8 py-3 hover:bg-white hover:text-black transition-all uppercase text-[10px] tracking-[0.3em]">
+          Initialize_Recon
+        </button>
+      </form>
     </div>
   );
 }
